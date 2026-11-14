@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Telemetry Analytics</title>
+
+    <link rel="stylesheet" href="vibecodinhas.css">
+
+</head>
+
+<body>
+
+    <header>
+        <div>
+            <h1>TELEMETRY ANALYTICS</h1>
+            <p>Mission Control System</p>
+        </div>
+
+        <div class="astronaut">
+            <span>ASTRONAUTA</span>
+            <strong id="astronautId">Aguardando dados...</strong>
+        </div>
+    </header>
+
+    <main>
+
+        <!-- STATUS DA MISSÃO -->
+        <section class="status">
+            <div>
+                <h2>Status da missão</h2>
+                <p>Classificação de risco recebida pela API</p>
+            </div>
+
+            <span id="riskLevel" class="loading">
+                CARREGANDO
+            </span>
+        </section>
+
+
+        <!-- INDICADORES BIOMÉTRICOS -->
+        <section class="indicators">
+
+            <div class="card">
+                <h3>Frequência Cardíaca</h3>
+
+                <p>
+                    <strong id="heartRate">--</strong>
+                    bpm
+                </p>
+
+                <span>Batimentos por minuto</span>
+            </div>
+
+
+            <div class="card">
+                <h3>Oxigenação (SpO₂)</h3>
+
+                <p>
+                    <strong id="spo2">--</strong>
+                    %
+                </p>
+
+                <span>Saturação de oxigênio</span>
+            </div>
+
+
+            <div class="card">
+                <h3>Exposição à Radiação</h3>
+
+                <p>
+                    <strong id="radiation">--</strong>
+                    mSv
+                </p>
+
+                <span>Dose de radiação</span>
+            </div>
+
+
+            <div class="card">
+                <h3>Horas de Sono</h3>
+
+                <p>
+                    <strong id="sleep">--</strong>
+                    h
+                </p>
+
+                <span>Último período de descanso</span>
+            </div>
+
+        </section>
+
+
+        <!-- ALERTAS DO SISTEMA -->
+        <section class="alerts">
+
+            <h2>Alertas do Sistema</h2>
+
+            <div id="alertMessage">
+                Aguardando análise da telemetria...
+            </div>
+
+        </section>
+
+
+        <!-- HISTÓRICO / ATUALIZAÇÃO -->
+        <section class="history">
+
+            <h2>Telemetria</h2>
+
+            <p>
+                Última atualização:
+                <span id="timestamp">Aguardando...</span>
+            </p>
+
+            <p id="connectionStatus" class="connection-status">
+                Conectando à API...
+            </p>
+
+            <button id="refreshButton" onclick="updateDashboard()">
+                Atualizar dados
+            </button>
+
+        </section>
+
+    </main>
+
+
+    <footer>
+        <p>Telemetry Analytics | Team Rapadura Cósmica</p>
+    </footer>
+
+
+    <script src="vibecodasso.js"></script>
+
+</body>
+
+</html>
