@@ -1,138 +1,78 @@
-// ENDEREÇO DA API JAVA
 const API_URL = "http://localhost:8080/api/telemetry/latest";
 
-
-// FUNÇÃO PRINCIPAL: BUSCAR E ATUALIZAR OS DADOS
 async function updateDashboard() {
-
     const refreshButton = document.getElementById("refreshButton");
     const connectionStatus = document.getElementById("connectionStatus");
+    const riskElement = document.getElementById("riskLevel");
+    const alertContainer = document.getElementById("alertMessage");
 
-    // Informa que a consulta está acontecendo
     refreshButton.disabled = true;
     refreshButton.textContent = "Carregando...";
-
     connectionStatus.textContent = "Consultando a API...";
-    
 
     try {
-
-        // 1. REALIZA A REQUISIÇÃO PARA A API JAVA
         const response = await fetch(API_URL);
 
-
-        // 2. VERIFICA SE A RESPOSTA FOI BEM-SUCEDIDA
-        if (!response.ok) {
-            throw new Error(
-                `Erro na API: ${response.status}`
-            );
+        if (response.status === 404) {
+            riskElement.textContent = "AGUARDANDO DADOS";
+            riskElement.className = "loading";
+            alertContainer.textContent = "Nenhuma telemetria registrada ainda. Inicie o simulador para enviar leituras.";
+            connectionStatus.textContent = "API online (banco vazio).";
+            return;
         }
 
+        if (!response.ok) {
+            throw new Error(`Erro na API: ${response.status}`);
+        }
 
-        // 3. CONVERTE A RESPOSTA PARA JSON
         const data = await response.json();
 
+        document.getElementById("astronautId").textContent = data.astronautId ?? "--";
+        document.getElementById("heartRate").textContent = data.heartRate ?? "--";
+        document.getElementById("spo2").textContent = data.spo2 ?? "--";
+        document.getElementById("radiation").textContent = data.radiationDoseMsv ?? "--";
+        document.getElementById("sleep").textContent = data.sleepHours ?? "--";
 
-        // 4. ATUALIZA A IDENTIFICAÇÃO DO ASTRONAUTA
-        document.getElementById("astronautId").textContent =
-            data.astronautId ?? "--";
-
-
-        // 5. ATUALIZA A FREQUÊNCIA CARDÍACA
-        document.getElementById("heartRate").textContent =
-            data.heartRate ?? "--";
-
-
-        // 6. ATUALIZA A OXIGENAÇÃO
-        document.getElementById("spo2").textContent =
-            data.spo2 ?? "--";
-
-
-        // 7. ATUALIZA A EXPOSIÇÃO À RADIAÇÃO
-        document.getElementById("radiation").textContent =
-            data.radiationDoseMsv ?? "--";
-
-
-        // 8. ATUALIZA AS HORAS DE SONO
-        document.getElementById("sleep").textContent =
-            data.sleepHours ?? "--";
-
-
-        // 9. ATUALIZA O NÍVEL DE RISCO
-        const riskElement = document.getElementById("riskLevel");
-
-        const risk = String(data.riskLevel ?? "")
-            .toUpperCase();
-
+        const risk = String(data.riskLevel ?? "").toUpperCase();
         riskElement.textContent = risk || "INDEFINIDO";
+        riskElement.className = ["NOMINAL", "WARNING", "CRITICAL"].includes(risk)
+            ? risk.toLowerCase()
+            : "loading";
 
+        const actionHtml = data.recommendedAction
+            ? `<div style="margin-bottom: 10px; padding: 10px; border-radius: 6px; background: rgba(37, 99, 235, 0.12); border-left: 3px solid #3b82f6; color: #f8fafc;">
+                 <strong>Ação Recomendada:</strong> ${data.recommendedAction}
+               </div>`
+            : "";
 
-        // Aplica a classe CSS correspondente ao risco
-        if (["NOMINAL", "WARNING", "CRITICAL"].includes(risk)) {
-            riskElement.className = risk.toLowerCase();
-        } else {
-            riskElement.className = "loading";
-        }
+        const alerts = (data.alertMessage || "Nenhuma mensagem de alerta recebida.")
+            .split(" | ")
+            .map(msg => `<li style="margin-left: 18px; margin-bottom: 4px;">${msg}</li>`)
+            .join("");
 
+        alertContainer.innerHTML = `${actionHtml}<ul style="margin: 0; padding: 0;">${alerts}</ul>`;
 
-        // 10. ATUALIZA A MENSAGEM DE ALERTA
-        document.getElementById("alertMessage").textContent =
-            data.alertMessage ?? "Nenhuma mensagem de alerta recebida.";
-
-
-        // 11. FORMATA A DATA RECEBIDA DA API
         const date = new Date(data.timestamp);
+        document.getElementById("timestamp").textContent =
+            data.timestamp && !Number.isNaN(date.getTime())
+                ? date.toLocaleString("pt-BR")
+                : "Data não disponível";
 
-        if (data.timestamp && !Number.isNaN(date.getTime())) {
+        connectionStatus.textContent = "Conexão com a API estabelecida.";
 
-            document.getElementById("timestamp").textContent =
-                date.toLocaleString("pt-BR");
-
-        } else {
-
-            document.getElementById("timestamp").textContent =
-                "Data não disponível";
-
-        }
-
-
-        // 12. INDICA QUE A CONEXÃO FOI BEM-SUCEDIDA
-        connectionStatus.textContent =
-            "Conexão com a API estabelecida.";
-
-    }
-
-
-    // 13. TRATAMENTO DE ERROS
-    catch (error) {
-
+    } catch (error) {
         console.error("Erro ao buscar telemetria:", error);
-
-        connectionStatus.textContent =
-            "Não foi possível conectar à API. Verifique o servidor.";
-
-        document.getElementById("alertMessage").textContent =
-            "Falha ao receber os dados de telemetria.";
-
-
-        const riskElement = document.getElementById("riskLevel");
-
+        connectionStatus.textContent = "Não foi possível conectar à API. Verifique o servidor.";
+        alertContainer.textContent = "Falha ao receber os dados de telemetria.";
         riskElement.textContent = "SEM CONEXÃO";
         riskElement.className = "loading";
-
-    }
-
-
-    // 14. RESTAURA O BOTÃO
-    finally {
-
+    } finally {
         refreshButton.disabled = false;
         refreshButton.textContent = "Atualizar dados";
-
     }
-
 }
 
-
-// CONSULTA A API ASSIM QUE A PÁGINA É CARREGADA
-document.addEventListener("DOMContentLoaded", updateDashboard);
+document.addEventListener("DOMContentLoaded", () => {
+    updateDashboard();
+    setInterval(updateDashboard, 3000);
+});
