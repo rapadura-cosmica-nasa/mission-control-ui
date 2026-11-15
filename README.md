@@ -1,31 +1,30 @@
-<div id="top" align="center">
+<a id="top"></a>
+<div align="center">
 
 # 🛰️ Mission Control UI (`mission-control-ui`)
 
 **Real-Time Astronaut Telemetry Dashboard, Risk Visualization & Mission Operations Interface — Team Rapadura Cósmica**
 
-![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
-![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
-![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
-![Nginx](https://img.shields.io/badge/Nginx-Static_Serve-009639?style=for-the-badge&logo=nginx&logoColor=white)
-![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker&logoColor=white)
+[![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/HTML)
+[![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/CSS)
+[![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+[![Nginx](https://img.shields.io/badge/Nginx-Static_Serve-009639?style=for-the-badge&logo=nginx&logoColor=white)](https://nginx.org/)
+[![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
 
-<p>
-  <a href="#english">🇺🇸 English</a> •
-  <a href="#português">🇧🇷 Português</a>
-</p>
+[🇺🇸 English](#english-docs) • [🇧🇷 Português](#portugues-docs)
 
 </div>
 
 ---
 
+<a id="english-docs"></a>
 ## 🇺🇸 English
-
-Real-time astronaut health dashboard and mission control interface for visualizing biometric vital signs, automated risk classifications, and clinical countermeasures. Developed by **Team Rapadura Cósmica** for the **NASA Space Apps Challenge 2026**.
 
 ### Overview
 
-`mission-control-ui` is the front-end layer of the **Rapadura Cósmica** astronaut telemetry ecosystem. It polls the Spring Boot persistence and orchestration gateway (`astronaut-health-api`) to display live biometric readings analyzed by the Python clinical rules engine (`telemetry-analytics`), providing immediate situational awareness for flight surgeons and mission operators.
+This service is the **Real-Time Astronaut Health Dashboard & Mission Control Interface** (`mission-control-ui`) developed by **Team Rapadura Cósmica** for the **NASA Space Apps Challenge 2026**.
+
+Operating as the front-end presentation layer within a decoupled microservice architecture, it continuously polls the **Core API (Java / Spring Boot)** to render live biometric vital signs, automated clinical risk classifications analyzed by the **Python Analytics Engine**, and prioritized operational countermeasures (`recommendedAction`) for flight surgeons and mission operators.
 
 ### Key Features
 
@@ -35,20 +34,19 @@ Real-time astronaut health dashboard and mission control interface for visualizi
 * **Actionable Countermeasures:** Highlights prioritized `recommendedAction` directives alongside structured, itemized clinical alerts (`alertMessage`).
 * **Resilient State Handling:** Gracefully distinguishes between offline API states and empty database initialization (`404 Not Found`) prior to simulator ingestion.
 
-### Architecture Integration
+### System Flow
 
 ```text
-[ Hardware / Telemetry Simulator ]
-               │  POST /api/telemetry
-               ▼
-[ astronaut-health-api (Spring Boot :8080) ] ◄──► [ telemetry-analytics (Flask :5000) ]
-               │
-               │  GET /api/telemetry/latest (CORS enabled)
-               ▼
-[ mission-control-ui (Nginx / Static :3000) ]
+[Telemetry Simulator] ──(POST /api/telemetry)──► [Core API: Spring Boot] ──► [H2 Database]
+                                                        │          │
+                              (GET /api/telemetry/latest)          └──(POST /api/v1/analyze)──► [Flask Analytics Engine]
+                                        ▼                                                               │
+                               [Mission Dashboard] ◄───────────────(200 OK: Enriched JSON)────────────┘
 ```
 
-### Project Structure
+### Project Architecture
+
+Built with vanilla semantic HTML5, modular aerospace-themed CSS3, and asynchronous ES6+ JavaScript for zero-dependency static serving via Nginx:
 
 ```text
 mission-control-ui/
@@ -59,32 +57,11 @@ mission-control-ui/
 └── README.md                  # Bilingual project documentation
 ```
 
-### Getting Started
-
-#### Option 1: Docker Compose (Recommended)
-
-Run the entire stack (`telemetry-analytics`, `astronaut-health-api`, and `mission-control-ui`) from the root workspace:
-
-```bash
-docker compose up --build
-```
-
-Access the dashboard at **`http://localhost:3000`**.
-
-#### Option 2: Standalone Local Server
-
-If the back-end API is already running on `http://localhost:8080`, serve the static assets directly using Python or Nginx:
-
-```bash
-python3 -m http.server 3000
-```
-
-Then open **`http://localhost:3000`** in your browser.
-
 ### API Contract Consumed
 
-The dashboard expects the following JSON payload from `GET http://localhost:8080/api/telemetry/latest`:
-
+#### Latest Telemetry Retrieval
+* **Endpoint:** `GET http://localhost:8080/api/telemetry/latest`
+* **Response Payload (`200 OK`):**
 ```json
 {
   "astronautId": "ASTRO-01",
@@ -99,19 +76,50 @@ The dashboard expects the following JSON payload from `GET http://localhost:8080
 }
 ```
 
+### Getting Started
+
+#### Option 1: Full Platform via Docker Compose (Recommended)
+
+Run the entire stack (`telemetry-analytics`, `astronaut-health-api`, and `mission-control-ui`) from the central platform orchestrator:
+
+```bash
+# 1. Clone the platform repository with submodules
+git clone --recurse-submodules https://github.com/rapadura-cosmica-nasa/rapadura-cosmica-platform.git
+cd rapadura-cosmica-platform
+
+# 2. Build and start all containers
+docker compose up --build -d
+
+# 3. Access the Mission Control UI at http://localhost:3000
+```
+
+#### Option 2: Standalone Local Server
+
+If the Core API is already running on `http://localhost:8080`, serve the static assets directly using Python:
+
+```bash
+# 1. Clone the UI repository
+git clone https://github.com/rapadura-cosmica-nasa/mission-control-ui.git
+cd mission-control-ui
+
+# 2. Start a local static server on port 3000
+python3 -m http.server 3000
+
+# 3. Open http://localhost:3000 in your browser
+```
+
 ---
 
+<a id="portugues-docs"></a>
 ## 🇧🇷 Português
 
-<p align="right">
-  <a href="#top">⬆️ Voltar ao topo / Back to top</a>
-</p>
-
-Painel de saúde de astronautas em tempo real e interface de controle de missão para visualização de sinais vitais biométricos, classificações automatizadas de risco e contramedidas clínicas. Desenvolvido pela equipe **Rapadura Cósmica** para o **NASA Space Apps Challenge 2026**.
+[⬆️ Back to top / Voltar ao topo](#top)
 
 ### Visão Geral
 
-O `mission-control-ui` é a camada de front-end do ecossistema de telemetria de astronautas **Rapadura Cósmica**. Ele consulta periodicamente o gateway de persistência e orquestração em Spring Boot (`astronaut-health-api`) para exibir leituras biométricas em tempo real analisadas pelo motor de regras clínicas em Python (`telemetry-analytics`), oferecendo consciência situacional imediata para médicos de voo e operadores da missão.
+Este serviço é o **Painel de Saúde de Astronautas em Tempo Real e Interface de Controle de Missão** (`mission-control-ui`) desenvolvido pela equipe **Rapadura Cósmica** para o **NASA Space Apps Challenge 2026**.
+
+Operando como a camada de apresentação front-end dentro de uma arquitetura de microsserviços desacoplados, ele consulta continuamente a **Core API (Java / Spring Boot)** para exibir sinais vitais biométricos em tempo real, classificações automatizadas de risco clínico analisadas pelo **Motor Analítico Python** e contramedidas operacionais priorizadas (`recommendedAction`) para médicos de voo e operadores da missão.
 
 ### Principais Funcionalidades
 
@@ -121,20 +129,19 @@ O `mission-control-ui` é a camada de front-end do ecossistema de telemetria de 
 * **Contramedidas Acionáveis:** Destaca a diretriz prioritária de `recommendedAction` acompanhada da lista estruturada de alertas clínicos (`alertMessage`).
 * **Tratamento Resiliente de Estados:** Diferencia de forma clara quando a API está offline ou quando o banco de dados ainda está vazio (`404 Not Found`) antes do início do simulador.
 
-### Integração na Arquitetura
+### Fluxo no Sistema
 
 ```text
-[ Hardware / Simulador de Telemetria ]
-               │  POST /api/telemetry
-               ▼
-[ astronaut-health-api (Spring Boot :8080) ] ◄──► [ telemetry-analytics (Flask :5000) ]
-               │
-               │  GET /api/telemetry/latest (CORS habilitado)
-               ▼
-[ mission-control-ui (Nginx / Estático :3000) ]
+[Simulador de Telemetria] ──(POST /api/telemetry)──► [Core API: Spring Boot] ──► [Banco H2]
+                                                            │          │
+                                  (GET /api/telemetry/latest)          └──(POST /api/v1/analyze)──► [Motor Flask Analytics]
+                                            ▼                                                               │
+                                   [Painel da Missão] ◄───────────────(200 OK: JSON Enriquecido)────────────┘
 ```
 
-### Estrutura do Projeto
+### Arquitetura do Projeto
+
+Desenvolvido com HTML5 semântico puro, CSS3 modular com tema aeroespacial e JavaScript ES6+ assíncrono para entrega estática leve e sem dependências via Nginx:
 
 ```text
 mission-control-ui/
@@ -145,32 +152,11 @@ mission-control-ui/
 └── README.md                  # Documentação bilíngue do projeto
 ```
 
-### Como Executar
-
-#### Opção 1: Docker Compose (Recomendado)
-
-Suba toda a arquitetura (`telemetry-analytics`, `astronaut-health-api` e `mission-control-ui`) a partir da pasta raiz do workspace:
-
-```bash
-docker compose up --build
-```
-
-Acesse o painel em **`http://localhost:3000`**.
-
-#### Opção 2: Servidor Local Isolado
-
-Caso a API back-end já esteja em execução em `http://localhost:8080`, sirva os arquivos estáticos diretamente via Python ou Nginx:
-
-```bash
-python3 -m http.server 3000
-```
-
-Em seguida, abra **`http://localhost:3000`** no navegador.
-
 ### Contrato de API Consumido
 
-O dashboard consome o seguinte payload JSON do endpoint `GET http://localhost:8080/api/telemetry/latest`:
-
+#### Consulta da Última Telemetria
+* **Endpoint:** `GET http://localhost:8080/api/telemetry/latest`
+* **Payload de Saída (`200 OK`):**
 ```json
 {
   "astronautId": "ASTRO-01",
@@ -183,6 +169,38 @@ O dashboard consome o seguinte payload JSON do endpoint `GET http://localhost:80
   "recommendedAction": "Verificar vedação do traje/cabine e administrar oxigênio suplementar a 100%.",
   "timestamp": "2026-11-15T00:56:21Z"
 }
+```
+
+### Como Executar
+
+#### Opção 1: Plataforma Completa via Docker Compose (Recomendado)
+
+Suba toda a arquitetura (`telemetry-analytics`, `astronaut-health-api` e `mission-control-ui`) a partir do repositório orquestrador central:
+
+```bash
+# 1. Clone o repositório da plataforma com os submódulos
+git clone --recurse-submodules https://github.com/rapadura-cosmica-nasa/rapadura-cosmica-platform.git
+cd rapadura-cosmica-platform
+
+# 2. Construa e inicie todos os contêineres
+docker compose up --build -d
+
+# 3. Acesse a interface Mission Control UI em http://localhost:3000
+```
+
+#### Opção 2: Servidor Local Isolado
+
+Caso a Core API já esteja em execução em `http://localhost:8080`, sirva os arquivos estáticos diretamente via Python:
+
+```bash
+# 1. Clone o repositório da interface
+git clone https://github.com/rapadura-cosmica-nasa/mission-control-ui.git
+cd mission-control-ui
+
+# 2. Inicie um servidor estático local na porta 3000
+python3 -m http.server 3000
+
+# 3. Abra http://localhost:3000 no navegador
 ```
 
 ---
@@ -196,6 +214,6 @@ O dashboard consome o seguinte payload JSON do endpoint `GET http://localhost:80
 * **Interface & Experiência do Astronauta (Front-end):** [Cauã Max](https://github.com/pl4utus)
 * **Pesquisa Científica NASA, Documentação & Pitch:** [Davi Duclerc](https://github.com/daviduclerc)
 
-<a href="#top">⬆️ Voltar ao topo / Back to top</a>
+[⬆️ Back to top / Voltar ao topo](#top)
 
 </div>
