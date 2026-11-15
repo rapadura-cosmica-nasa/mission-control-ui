@@ -1,140 +1,151 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Telemetry Analytics</title>
-
+    <title>Telemetry Analytics | Mission Control</title>
+    <!-- Importando a fonte técnica Space Grotesk / Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="estilizacao_dashboard.css">
-
 </head>
-
 <body>
 
-    <header>
-        <div>
+    <!-- BARRA SUPERIOR DE TELEMETRIA -->
+    <header class="mission-header">
+        <div class="brand-group">
+            <div class="live-indicator">
+                <span class="pulse-dot"></span>
+                <span>AO VIVO</span>
+            </div>
             <h1>TELEMETRY ANALYTICS</h1>
-            <p>Mission Control System</p>
         </div>
 
-        <div class="astronaut">
-            <span>ASTRONAUTA</span>
-            <strong id="astronautId">Aguardando dados...</strong>
+        <div class="mission-meta">
+            <div class="meta-item">
+                <span class="meta-label">SESSÃO</span>
+                <span class="meta-value">ORBIT-01</span>
+            </div>
+            <div class="meta-item astronaut-badge">
+                <span class="meta-label">ASTRONAUTA</span>
+                <strong id="astronautId">--</strong>
+            </div>
         </div>
     </header>
 
-    <main>
+    <main class="dashboard-container">
 
-        <!-- STATUS DA MISSÃO -->
-        <section class="status">
-            <div>
-                <h2>Status da missão</h2>
-                <p>Classificação de risco recebida pela API</p>
+        <!-- PAINEL DE STATUS DA MISSÃO -->
+        <section class="status-banner">
+            <div class="status-info">
+                <h2>Status Geral da Missão</h2>
+                <p>Diagnóstico automatizado e classificação de risco do backend</p>
             </div>
-
-            <span id="riskLevel" class="loading">
-                CARREGANDO
-            </span>
+            <div class="status-badge-wrapper">
+                <span id="riskLevel" class="loading">CARREGANDO</span>
+            </div>
         </section>
 
+        <!-- GRID DE INDICADORES BIOMÉTRICOS -->
+        <section class="metrics-grid">
 
-        <!-- INDICADORES BIOMÉTRICOS -->
-        <section class="indicators">
-
-            <div class="card">
-                <h3>Frequência Cardíaca</h3>
-
-                <p>
+            <div class="metric-card">
+                <div class="card-header">
+                    <h3>Frequência Cardíaca</h3>
+                    <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                </div>
+                <div class="metric-value-group">
                     <strong id="heartRate">--</strong>
-                    bpm
-                </p>
-
-                <span>Batimentos por minuto</span>
+                    <span class="unit">bpm</span>
+                </div>
+                <div class="metric-footer">
+                    <span>Faixa nominal: 60 - 100 bpm</span>
+                </div>
             </div>
 
-
-            <div class="card">
-                <h3>Oxigenação (SpO₂)</h3>
-
-                <p>
+            <div class="metric-card">
+                <div class="card-header">
+                    <h3>Oxigenação (SpO₂)</h3>
+                    <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+                </div>
+                <div class="metric-value-group">
                     <strong id="spo2">--</strong>
-                    %
-                </p>
-
-                <span>Saturação de oxigênio</span>
+                    <span class="unit">%</span>
+                </div>
+                <div class="metric-footer">
+                    <span>Saturação periférica</span>
+                </div>
             </div>
 
-
-            <div class="card">
-                <h3>Exposição à Radiação</h3>
-
-                <p>
+            <div class="metric-card">
+                <div class="card-header">
+                    <h3>Exposição à Radiação</h3>
+                    <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 12h0.01"/><path d="M7.5 4.2c-.3-.5-.9-.7-1.3-.4C3.9 5.5 2.3 8.1 2 11c-.1.5.4 1 1 1h5c0-1.5.8-2.8 2-3.4-1.1-1.9-2-3.5-2.5-4.4z"/><path d="M21 12c.6 0 1-.4 1-1-.3-2.9-1.8-5.5-4.1-7.1-.4-.3-1.1-.2-1.3.3-.6.9-1.5 2.5-2.6 4.3 1.2.7 2 2 2 3.5h5z"/><path d="M7.5 19.8c-.3.5-.1 1.1.4 1.3 2.6 1.2 5.6 1.2 8.2 0 .5-.2.7-.8.4-1.3-.5-.9-1.4-2.5-2.5-4.3-1.2.7-2.8.7-4 0-1.1 1.8-2 3.4-2.5 4.3z"/></svg>
+                </div>
+                <div class="metric-value-group">
                     <strong id="radiation">--</strong>
-                    mSv
-                </p>
-
-                <span>Dose de radiação</span>
+                    <span class="unit">mSv</span>
+                </div>
+                <div class="metric-footer">
+                    <span>Acumulado orbital</span>
+                </div>
             </div>
 
-
-            <div class="card">
-                <h3>Horas de Sono</h3>
-
-                <p>
+            <div class="metric-card">
+                <div class="card-header">
+                    <h3>Horas de Sono</h3>
+                    <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                </div>
+                <div class="metric-value-group">
                     <strong id="sleep">--</strong>
-                    h
-                </p>
-
-                <span>Último período de descanso</span>
+                    <span class="unit">h</span>
+                </div>
+                <div class="metric-footer">
+                    <span>Ciclo de descanso recente</span>
+                </div>
             </div>
 
         </section>
 
+        <!-- SEÇÃO INFERIOR: ALERTAS E CONTROLES -->
+        <div class="lower-grid">
+            
+            <!-- ALERTAS DO SISTEMA -->
+            <section class="panel alerts-panel">
+                <div class="panel-header">
+                    <h2>Telemetria & Mensagens</h2>
+                </div>
+                <div class="alert-body">
+                    <div id="alertMessage">Aguardando análise da telemetria...</div>
+                </div>
+            </section>
 
-        <!-- ALERTAS DO SISTEMA -->
-        <section class="alerts">
+            <!-- PAINEL DE CONTROLE / HISTÓRICO -->
+            <section class="panel control-panel">
+                <div class="panel-header">
+                    <h2>Sincronização</h2>
+                </div>
+                <div class="control-body">
+                    <div class="timestamp-info">
+                        <span>Última leitura:</span>
+                        <strong id="timestamp">Aguardando...</strong>
+                    </div>
+                    <div id="connectionStatus" class="connection-status">
+                        Conectando à API...
+                    </div>
+                    <button id="refreshButton" onclick="updateDashboard()">
+                        Atualizar dados
+                    </button>
+                </div>
+            </section>
 
-            <h2>Alertas do Sistema</h2>
-
-            <div id="alertMessage">
-                Aguardando análise da telemetria...
-            </div>
-
-        </section>
-
-
-        <!-- HISTÓRICO / ATUALIZAÇÃO -->
-        <section class="history">
-
-            <h2>Telemetria</h2>
-
-            <p>
-                Última atualização:
-                <span id="timestamp">Aguardando...</span>
-            </p>
-
-            <p id="connectionStatus" class="connection-status">
-                Conectando à API...
-            </p>
-
-            <button id="refreshButton" onclick="updateDashboard()">
-                Atualizar dados
-            </button>
-
-        </section>
+        </div>
 
     </main>
 
-
-    <footer>
-        <p>Telemetry Analytics | Team Rapadura Cósmica</p>
+    <footer class="mission-footer">
+        <p>Telemetry Analytics — Team Rapadura Cósmica © 2026</p>
     </footer>
 
-
     <script src="aplicacao_dashboard.js"></script>
-
 </body>
-
 </html>
