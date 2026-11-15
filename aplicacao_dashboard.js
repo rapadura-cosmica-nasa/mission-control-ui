@@ -55,7 +55,7 @@ async function updateDashboard() {
         const date = new Date(data.timestamp);
         document.getElementById("timestamp").textContent =
             data.timestamp && !Number.isNaN(date.getTime())
-                ? date.toLocaleString("pt-BR")
+                ? `${date.toLocaleString("pt-BR", { timeZone: "UTC" })} UTC`
                 : "Data não disponível";
 
         connectionStatus.textContent = "Conexão com a API estabelecida.";
