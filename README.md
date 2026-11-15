@@ -1,10 +1,24 @@
-# Mission Control UI — Telemetry Analytics Dashboard
+<div id="top" align="center">
 
-*[English](#english) | [Português](#português)*
+# 🛰️ Mission Control UI (`mission-control-ui`)
+
+**Real-Time Astronaut Telemetry Dashboard, Risk Visualization & Mission Operations Interface — Team Rapadura Cósmica**
+
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
+![Nginx](https://img.shields.io/badge/Nginx-Static_Serve-009639?style=for-the-badge&logo=nginx&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker&logoColor=white)
+
+<p>
+  <a href="#english">🇺🇸 English</a> •
+  <a href="#português">🇧🇷 Português</a>
+</p>
+
+</div>
 
 ---
 
-<a name="english"></a>
 ## 🇺🇸 English
 
 Real-time astronaut health dashboard and mission control interface for visualizing biometric vital signs, automated risk classifications, and clinical countermeasures. Developed by **Team Rapadura Cósmica** for the **NASA Space Apps Challenge 2026**.
@@ -15,11 +29,11 @@ Real-time astronaut health dashboard and mission control interface for visualizi
 
 ### Key Features
 
-- **Live Telemetry Polling:** Automatically fetches the latest astronaut telemetry payload every 3 seconds (`GET /api/telemetry/latest`) with manual refresh support.
-- **Biometric Vital Cards:** Real-time display of **Heart Rate (`bpm`)**, **Blood Oxygen Saturation (`SpO₂ %`)**, **Orbital Radiation Exposure (`mSv`)**, and **Sleep Duration (`h`)** with domain-specific SVG iconography.
-- **Automated Risk Status Banner:** Dynamic visual classification (`NOMINAL`, `WARNING`, `CRITICAL`) with color-coded badges and alert animations.
-- **Actionable Countermeasures:** Highlights prioritized `recommendedAction` directives alongside structured, itemized clinical alerts (`alertMessage`).
-- **Resilient State Handling:** Gracefully distinguishes between offline API states and empty database initialization (`404 Not Found`) prior to simulator ingestion.
+* **Live Telemetry Polling:** Automatically fetches the latest astronaut telemetry payload every 3 seconds (`GET /api/telemetry/latest`) with manual refresh support.
+* **Biometric Vital Cards:** Real-time display of **Heart Rate (`bpm`)**, **Blood Oxygen Saturation (`SpO₂ %`)**, **Orbital Radiation Exposure (`mSv`)**, and **Sleep Duration (`h`)** with domain-specific SVG iconography.
+* **Automated Risk Status Banner:** Dynamic visual classification (`NOMINAL`, `WARNING`, `CRITICAL`) with color-coded badges and alert animations.
+* **Actionable Countermeasures:** Highlights prioritized `recommendedAction` directives alongside structured, itemized clinical alerts (`alertMessage`).
+* **Resilient State Handling:** Gracefully distinguishes between offline API states and empty database initialization (`404 Not Found`) prior to simulator ingestion.
 
 ### Architecture Integration
 
@@ -48,6 +62,7 @@ mission-control-ui/
 ### Getting Started
 
 #### Option 1: Docker Compose (Recommended)
+
 Run the entire stack (`telemetry-analytics`, `astronaut-health-api`, and `mission-control-ui`) from the root workspace:
 
 ```bash
@@ -57,6 +72,7 @@ docker compose up --build
 Access the dashboard at **`http://localhost:3000`**.
 
 #### Option 2: Standalone Local Server
+
 If the back-end API is already running on `http://localhost:8080`, serve the static assets directly using Python or Nginx:
 
 ```bash
@@ -85,8 +101,11 @@ The dashboard expects the following JSON payload from `GET http://localhost:8080
 
 ---
 
-<a name="português"></a>
 ## 🇧🇷 Português
+
+<p align="right">
+  <a href="#top">⬆️ Voltar ao topo / Back to top</a>
+</p>
 
 Painel de saúde de astronautas em tempo real e interface de controle de missão para visualização de sinais vitais biométricos, classificações automatizadas de risco e contramedidas clínicas. Desenvolvido pela equipe **Rapadura Cósmica** para o **NASA Space Apps Challenge 2026**.
 
@@ -96,11 +115,11 @@ O `mission-control-ui` é a camada de front-end do ecossistema de telemetria de 
 
 ### Principais Funcionalidades
 
-- **Atualização Automática (Live Polling):** Busca automaticamente os dados mais recentes de telemetria a cada 3 segundos (`GET /api/telemetry/latest`), além de permitir atualização manual sob demanda.
-- **Cards de Indicadores Biométricos:** Exibição em tempo real de **Frequência Cardíaca (`bpm`)**, **Oxigenação Sanguínea (`SpO₂ %`)**, **Exposição à Radiação Orbital (`mSv`)** e **Horas de Sono (`h`)** com ícones SVG dedicados ao domínio aeroespacial.
-- **Banner Automatizado de Status de Risco:** Classificação visual dinâmica (`NOMINAL`, `WARNING`, `CRITICAL`) com badges coloridos e animações de alerta.
-- **Contramedidas Acionáveis:** Destaca a diretriz prioritária de `recommendedAction` acompanhada da lista estruturada de alertas clínicos (`alertMessage`).
-- **Tratamento Resiliente de Estados:** Diferencia de forma clara quando a API está offline ou quando o banco de dados ainda está vazio (`404 Not Found`) antes do início do simulador.
+* **Atualização Automática (Live Polling):** Busca automaticamente os dados mais recentes de telemetria a cada 3 segundos (`GET /api/telemetry/latest`), além de permitir atualização manual sob demanda.
+* **Cards de Indicadores Biométricos:** Exibição em tempo real de **Frequência Cardíaca (`bpm`)**, **Oxigenação Sanguínea (`SpO₂ %`)**, **Exposição à Radiação Orbital (`mSv`)** e **Horas de Sono (`h`)** com ícones SVG dedicados ao domínio aeroespacial.
+* **Banner Automatizado de Status de Risco:** Classificação visual dinâmica (`NOMINAL`, `WARNING`, `CRITICAL`) com badges coloridos e animações de alerta.
+* **Contramedidas Acionáveis:** Destaca a diretriz prioritária de `recommendedAction` acompanhada da lista estruturada de alertas clínicos (`alertMessage`).
+* **Tratamento Resiliente de Estados:** Diferencia de forma clara quando a API está offline ou quando o banco de dados ainda está vazio (`404 Not Found`) antes do início do simulador.
 
 ### Integração na Arquitetura
 
@@ -129,6 +148,7 @@ mission-control-ui/
 ### Como Executar
 
 #### Opção 1: Docker Compose (Recomendado)
+
 Suba toda a arquitetura (`telemetry-analytics`, `astronaut-health-api` e `mission-control-ui`) a partir da pasta raiz do workspace:
 
 ```bash
@@ -138,6 +158,7 @@ docker compose up --build
 Acesse o painel em **`http://localhost:3000`**.
 
 #### Opção 2: Servidor Local Isolado
+
 Caso a API back-end já esteja em execução em `http://localhost:8080`, sirva os arquivos estáticos diretamente via Python ou Nginx:
 
 ```bash
@@ -166,7 +187,7 @@ O dashboard consome o seguinte payload JSON do endpoint `GET http://localhost:80
 
 ---
 
-## Team / Equipe
+<div align="center">
 
 **Team Rapadura Cósmica** — NASA Space Apps Challenge 2026
 
@@ -174,3 +195,7 @@ O dashboard consome o seguinte payload JSON do endpoint `GET http://localhost:80
 * **Edge, Simulação & Análise de Anomalias (Python / Flask):** [Murilo Costa](https://github.com/MuriloDev07) & [Gabriel Guedes](https://github.com/gueeds)
 * **Interface & Experiência do Astronauta (Front-end):** [Cauã Max](https://github.com/pl4utus)
 * **Pesquisa Científica NASA, Documentação & Pitch:** [Davi Duclerc](https://github.com/daviduclerc)
+
+<a href="#top">⬆️ Voltar ao topo / Back to top</a>
+
+</div>
